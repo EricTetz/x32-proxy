@@ -60,15 +60,19 @@ const clients = new Set();
 // List of servers
 const servers = new Set();
 
-for (const type of ['udp', 'ws']) {
+for (const [type, constructor, defaultPort, http] of [
+    ['udp', UdpServer, argv.targetPort],
+    ['ws', WsServer, 8080, argv['http']],
+  ]) {
   for (const host of argv[type] || []) {
     const url = new URL(`fake-protocol://${host || '127.0.0.1'}`);
     servers.add(
-      new (type === 'ws' ? WsServer : UdpServer)({
+      new constructor({
         target: argv.target,
         targetPort: argv.targetPort,
-        port: url.port || (type === 'udp' ? argv.targetPort : 8080),
-        address: url.hostname
+        port: url.port || defaultPort,
+        address: url.hostname,
+        http
       })
     );
   }

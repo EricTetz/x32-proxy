@@ -83,6 +83,10 @@ ws.addEventListener('message', (e) => {
 
 You may specify `--ws` multiple times to listen on multiple interfaces and/or ports.
 
+### `--http`
+
+Add static HTTP file server to websocket address/port. Will serve files from the current directory. See [serve-static](https://www.npmjs.com/package/serve-static).
+
 ### `--help`
 Shows all the options and usage.
 
